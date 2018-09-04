@@ -3,8 +3,9 @@ const Joi = require("joi");
 
 const userSchema = new mongoose.Schema({
   nom: { type: String, required: true, minlength: 3, maxlength: 255 },
-  email: { type: string, required: true, minlength: 8, maxlength: 255 },
-  telephone: { type: string, minlength: 8, maxlength: 8 }
+  email: { type: String, required: true, minlength: 8, maxlength: 255 },
+  telephone: { type: String, minlength: 8, maxlength: 8 },
+  date: { type: Date, default: Date.now() }
 });
 
 const User = mongoose.model("User", userSchema);
@@ -36,13 +37,13 @@ User.deleteUser = async function(id) {
 };
 
 User.getUsers = async function() {
-  return await User.find();
+  return await User.find().sort({ _id: -1 });
 };
 
 User.validateUser = function(User) {
   const Schema = {
     nom: Joi.string()
-      .min(5)
+      .min(3)
       .max(50)
       .required(),
     email: Joi.string()
